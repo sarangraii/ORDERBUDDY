@@ -5,7 +5,8 @@ export default defineConfig({
   plugins: [react()],
   preview: {
     port: 10000,
-    host: true
+    host: true,
+    allowedHosts: ['orderbuddy-yx80.onrender.com', 'all']
   },
   server: {
     port: 5173,
