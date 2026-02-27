@@ -33,14 +33,22 @@ const MenuPage = () => {
   const qc = useQueryClient()
   const [localItems, setLocalItems] = useState(DEMO_MENU.items)
 
-  const { data } = useQuery({
+  // const { data } = useQuery({
+  //   queryKey: ['menu-manage', restaurantId],
+  //   queryFn: () => axios.get(`/api/menu/${restaurantId}`).then(r => r.data),
+  //   enabled: !!restaurantId,
+  //   onSuccess: (d: any) => { if (d.items?.length) setLocalItems(d.items) }
+  // } as any)
+
+  // const items = (data?.items?.length ? data.items : localItems)
+  // const categories = data?.categories?.length ? data.categories : DEMO_MENU.categories
+  const { data } = useQuery<{ items: any[]; categories: any[] }>({
     queryKey: ['menu-manage', restaurantId],
     queryFn: () => axios.get(`/api/menu/${restaurantId}`).then(r => r.data),
     enabled: !!restaurantId,
-    onSuccess: (d: any) => { if (d.items?.length) setLocalItems(d.items) }
-  } as any)
+  })
 
-  const items = (data?.items?.length ? data.items : localItems)
+  const items = data?.items?.length ? data.items : localItems
   const categories = data?.categories?.length ? data.categories : DEMO_MENU.categories
 
   const toggle = async (id: string) => {
