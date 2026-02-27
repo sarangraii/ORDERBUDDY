@@ -1,0 +1,22 @@
+{
+  "name": "orderbuddy",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AI-native restaurant ordering system - MERN Stack",
+  "workspaces": [
+    "api",
+    "apps/order",
+    "apps/manage"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev:api\" \"npm run dev:order\" \"npm run dev:manage\"",
+    "dev:api": "npm run dev --workspace=api",
+    "dev:order": "npm run dev --workspace=apps/order",
+    "dev:manage": "npm run dev --workspace=apps/manage",
+    "install:all": "npm install",
+    "build": "npm run build --workspaces"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
