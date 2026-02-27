@@ -41,13 +41,21 @@ const OrderTrackingPage = () => {
   const order = liveOrder || fetchedOrder || (isDemo ? DEMO_ORDER : null)
 
   // Real-time updates via Socket.io
+  // useEffect(() => {
+  //   if (!orderId || isDemo) return
+  //   joinOrderRoom(orderId)
+  //   const unsub = onOrderUpdate((updated) => {
+  //     if (updated._id === orderId) setLiveOrder(updated)
+  //   })
+  //   return unsub
+  // }, [orderId, isDemo])
   useEffect(() => {
     if (!orderId || isDemo) return
     joinOrderRoom(orderId)
     const unsub = onOrderUpdate((updated) => {
       if (updated._id === orderId) setLiveOrder(updated)
     })
-    return unsub
+    return () => { unsub() }
   }, [orderId, isDemo])
 
   if (!order) return (
