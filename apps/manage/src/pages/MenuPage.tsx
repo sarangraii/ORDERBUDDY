@@ -33,15 +33,26 @@ const MenuPage = () => {
   const qc = useQueryClient()
   const [localItems, setLocalItems] = useState(DEMO_MENU.items)
 
+  // const { data } = useQuery({
+  //   queryKey: ['menu-manage', restaurantId],
+  //   queryFn: () => axios.get(`/api/menu/${restaurantId}`).then(r => r.data),
+  //   enabled: !!restaurantId,
+  //   onSuccess: (d: any) => { if (d.items?.length) setLocalItems(d.items) }
+  // } as any)
+
+  // const items = (data?.items?.length ? data.items : localItems)
+  // const categories = data?.categories?.length ? data.categories : DEMO_MENU.categories
   const { data } = useQuery({
     queryKey: ['menu-manage', restaurantId],
-    queryFn: () => axios.get(`/api/menu/${restaurantId}`).then(r => r.data),
+    queryFn: async () => {
+      const r = await axios.get(`/api/menu/${restaurantId}`)
+      return r.data as { items: any[]; categories: any[] }
+    },
     enabled: !!restaurantId,
-    onSuccess: (d: any) => { if (d.items?.length) setLocalItems(d.items) }
-  } as any)
+  })
 
-  const items = (data?.items?.length ? data.items : localItems)
-  const categories = data?.categories?.length ? data.categories : DEMO_MENU.categories
+  const items: any[] = data?.items?.length ? data.items : localItems
+  const categories: any[] = data?.categories?.length ? data.categories : DEMO_MENU.categories
 
   const toggle = async (id: string) => {
     setLocalItems(prev => prev.map(i => i._id === id ? { ...i, isAvailable: !i.isAvailable } : i))
