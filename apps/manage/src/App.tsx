@@ -10,7 +10,7 @@ const ProtectedLayout = () => {
   const isAuth = useAuthStore(s => s.isAuth())
   if (!isAuth) return <Navigate to="/login" replace />
   return (
-    <div style={{ display: 'flex' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <Sidebar />
       <main className="main">
         <Routes>

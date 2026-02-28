@@ -32,30 +32,48 @@ body {
 
 h1, h2, h3, h4 { font-family: 'Syne', sans-serif; }
 
+/* ── Desktop Sidebar ── */
 .sidebar {
-  width: 220px; background: var(--surface); border-right: 1px solid var(--border);
-  height: 100vh; position: fixed; left: 0; top: 0;
-  display: flex; flex-direction: column; padding: 20px 12px;
+  width: 220px;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 12px;
   z-index: 100;
 }
 
-.main { margin-left: 220px; padding: 32px; min-height: 100vh; }
-
-.card {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 14px; padding: 20px;
+.main {
+  margin-left: 220px;
+  padding: 32px;
+  min-height: 100vh;
 }
 
+/* ── Card ── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+}
+
+/* ── Nav ── */
 .nav-btn {
   display: flex; align-items: center; gap: 10px;
   padding: 10px 12px; border-radius: 10px;
   color: var(--text-muted); font-size: 14px; font-weight: 500;
   cursor: pointer; transition: all 0.15s;
   border: none; background: none; width: 100%; text-align: left;
+  white-space: nowrap;
 }
 .nav-btn:hover { background: var(--surface-2); color: var(--text); }
 .nav-btn.active { background: var(--surface-2); color: var(--primary); }
 
+/* ── Buttons ── */
 .btn {
   display: inline-flex; align-items: center; justify-content: center;
   padding: 10px 18px; border-radius: 10px; font-size: 14px;
@@ -67,6 +85,7 @@ h1, h2, h3, h4 { font-family: 'Syne', sans-serif; }
 .btn-outline { background: transparent; color: var(--text-soft); border: 1px solid var(--border); }
 .btn-outline:hover { border-color: var(--text-muted); color: var(--text); }
 
+/* ── Badges ── */
 .badge { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; }
 .badge-pending { background: #F59E0B18; color: #F59E0B; }
 .badge-confirmed { background: #3B82F618; color: #60A5FA; }
@@ -75,17 +94,20 @@ h1, h2, h3, h4 { font-family: 'Syne', sans-serif; }
 .badge-delivered { background: #6B728018; color: #9CA3AF; }
 .badge-cancelled { background: #EF444418; color: #F87171; }
 
+/* ── Table ── */
 table { width: 100%; border-collapse: collapse; }
 th { text-align: left; padding: 10px 14px; color: var(--text-muted); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid var(--border); }
 td { padding: 13px 14px; border-bottom: 1px solid var(--border); font-size: 14px; }
 tr:last-child td { border-bottom: none; }
 tr:hover td { background: var(--surface-2); }
 
+/* ── Animations ── */
 @keyframes fadeUp { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform: translateY(0); } }
 @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
 .fade-up { animation: fadeUp 0.25s ease forwards; }
 .pulse { animation: pulse 2s ease-in-out infinite; }
 
+/* ── Inputs ── */
 input, textarea, select {
   background: var(--surface-2); border: 1px solid var(--border);
   border-radius: 10px; padding: 10px 14px; color: var(--text);
@@ -94,33 +116,36 @@ input, textarea, select {
 }
 input:focus, textarea:focus, select:focus { border-color: var(--primary); }
 
-/* ── Mobile Responsive ── */
+/* ── Mobile ── */
 @media (max-width: 768px) {
   .sidebar {
     width: 100%;
     height: auto;
     position: sticky;
     top: 0;
-    flex-direction: row;
+    flex-direction: column;
     padding: 12px 16px;
     border-right: none;
     border-bottom: 1px solid var(--border);
-    align-items: center;
-    justify-content: space-between;
-    overflow-x: auto;
+    z-index: 100;
   }
 
   .sidebar nav {
     flex-direction: row !important;
-    flex: 1;
     gap: 4px !important;
     overflow-x: auto;
     scrollbar-width: none;
+    padding-bottom: 4px;
   }
+
+  .sidebar nav::-webkit-scrollbar { display: none; }
 
   .sidebar .user-info { display: none; }
 
-  .main { margin-left: 0; padding: 16px; }
+  .main {
+    margin-left: 0 !important;
+    padding: 16px;
+  }
 
   .stats-grid { grid-template-columns: repeat(2, 1fr) !important; }
 
@@ -131,6 +156,5 @@ input:focus, textarea:focus, select:focus { border-color: var(--primary); }
   .orders-grid { grid-template-columns: 1fr !important; }
 
   h1 { font-size: 20px !important; }
-
   .card { padding: 14px; }
 }
