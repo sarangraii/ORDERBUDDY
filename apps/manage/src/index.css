@@ -93,3 +93,44 @@ input, textarea, select {
   transition: border-color 0.15s;
 }
 input:focus, textarea:focus, select:focus { border-color: var(--primary); }
+
+/* ── Mobile Responsive ── */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: sticky;
+    top: 0;
+    flex-direction: row;
+    padding: 12px 16px;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    align-items: center;
+    justify-content: space-between;
+    overflow-x: auto;
+  }
+
+  .sidebar nav {
+    flex-direction: row !important;
+    flex: 1;
+    gap: 4px !important;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .sidebar .user-info { display: none; }
+
+  .main { margin-left: 0; padding: 16px; }
+
+  .stats-grid { grid-template-columns: repeat(2, 1fr) !important; }
+
+  .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  table { min-width: 500px; }
+  th, td { padding: 8px 10px; font-size: 12px; }
+
+  .orders-grid { grid-template-columns: 1fr !important; }
+
+  h1 { font-size: 20px !important; }
+
+  .card { padding: 14px; }
+}

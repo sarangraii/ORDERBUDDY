@@ -32,13 +32,12 @@ const OrdersPage = () => {
 
   useEffect(() => {
     if (!restaurantId) return
-    // Fetch real orders
     axios.get(`/api/orders?restaurantId=${restaurantId}`)
       .then(r => { if (r.data.length) setOrders(r.data) })
       .catch(() => {})
 
-    // Live updates
-    const socket = io('/', { transports: ['websocket', 'polling'] })
+    const socketUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000'
+    const socket = io(socketUrl, { transports: ['websocket', 'polling'] })
     socket.emit('join:restaurant', restaurantId)
     socket.on('order:new', (order: any) => setOrders(prev => [order, ...prev]))
     socket.on('order:updated', (updated: any) => setOrders(prev => prev.map(o => o._id === updated._id ? updated : o)))
@@ -76,14 +75,15 @@ const OrdersPage = () => {
         <p style={{ color: 'var(--text-muted)', fontSize: 14 }}>Manage and route incoming orders in real-time</p>
       </div>
 
-      {/* Filter tabs */}
-      <div style={{ display: 'flex', gap: 8, marginBottom: 24 }}>
+      {/* Filter tabs - added overflowX scroll for mobile */}
+      <div style={{ display: 'flex', gap: 8, marginBottom: 24, overflowX: 'auto', paddingBottom: 4, scrollbarWidth: 'none' }}>
         {FILTERS.map(f => (
           <button key={f.key} onClick={() => setFilter(f.key)} style={{
             padding: '7px 14px', borderRadius: 999, border: 'none', cursor: 'pointer',
             background: filter === f.key ? 'var(--primary)' : 'var(--surface)',
             color: filter === f.key ? 'white' : 'var(--text-muted)',
-            fontSize: 13, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 6
+            fontSize: 13, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 6,
+            whiteSpace: 'nowrap', flexShrink: 0
           }}>
             {f.label}
             {f.count > 0 && <span style={{ background: filter === f.key ? 'rgba(255,255,255,0.25)' : 'var(--surface-3)', borderRadius: 999, padding: '1px 7px', fontSize: 11 }}>{f.count}</span>}
@@ -91,8 +91,8 @@ const OrdersPage = () => {
         ))}
       </div>
 
-      {/* Orders grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 14 }}>
+      {/* Orders grid - added className="orders-grid" */}
+      <div className="orders-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 14 }}>
         {filtered.map(order => (
           <div key={order._id} className="card fade-up" style={{ borderLeft: order.status === 'pending' ? '3px solid var(--primary)' : '3px solid transparent' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 }}>

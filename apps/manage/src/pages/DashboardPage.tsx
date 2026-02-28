@@ -27,7 +27,8 @@ const DashboardPage = () => {
 
   useEffect(() => {
     if (!restaurantId) return
-    const socket = io('/', { transports: ['websocket', 'polling'] })
+    const socketUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000'
+    const socket = io(socketUrl, { transports: ['websocket', 'polling'] })
     socket.emit('join:restaurant', restaurantId)
     socket.on('order:new', () => setNewOrders(n => n + 1))
     return () => { socket.disconnect() }
@@ -47,8 +48,8 @@ const DashboardPage = () => {
         )}
       </div>
 
-      {/* Stats */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 14, marginBottom: 28 }}>
+      {/* Stats - added className="stats-grid" */}
+      <div className="stats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 14, marginBottom: 28 }}>
         {STATS.map(s => (
           <div key={s.label} className="card">
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
@@ -61,31 +62,33 @@ const DashboardPage = () => {
         ))}
       </div>
 
-      {/* Recent orders */}
+      {/* Recent orders - added table-wrap div */}
       <div className="card">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 18 }}>
           <h2 style={{ fontWeight: 800, fontSize: 17 }}>Recent Orders</h2>
           <a href="/orders" style={{ color: 'var(--primary)', fontSize: 13, textDecoration: 'none', fontWeight: 600 }}>View all →</a>
         </div>
-        <table>
-          <thead>
-            <tr>
-              {['Order', 'Table', 'Items', 'Status', 'Time', 'Total'].map(h => <th key={h}>{h}</th>)}
-            </tr>
-          </thead>
-          <tbody>
-            {RECENT.map(o => (
-              <tr key={o.id}>
-                <td style={{ fontWeight: 700 }}>{o.id}</td>
-                <td style={{ color: 'var(--text-muted)' }}>Table {o.table}</td>
-                <td style={{ color: 'var(--text-muted)', maxWidth: 200, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{o.items}</td>
-                <td><span className={`badge ${BADGE[o.status]}`}>{o.status}</span></td>
-                <td style={{ color: 'var(--text-muted)' }}>{o.time}</td>
-                <td style={{ fontWeight: 700, color: 'var(--primary)' }}>{o.total}</td>
+        <div className="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                {['Order', 'Table', 'Items', 'Status', 'Time', 'Total'].map(h => <th key={h}>{h}</th>)}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {RECENT.map(o => (
+                <tr key={o.id}>
+                  <td style={{ fontWeight: 700 }}>{o.id}</td>
+                  <td style={{ color: 'var(--text-muted)' }}>Table {o.table}</td>
+                  <td style={{ color: 'var(--text-muted)', maxWidth: 200, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{o.items}</td>
+                  <td><span className={`badge ${BADGE[o.status]}`}>{o.status}</span></td>
+                  <td style={{ color: 'var(--text-muted)' }}>{o.time}</td>
+                  <td style={{ fontWeight: 700, color: 'var(--primary)' }}>{o.total}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   )
